@@ -2,17 +2,9 @@
 
 #include <LiquidCrystal.h>
 
-//калибровочные константы датчиков (y = k*x + b)
-const float k1 = -5.7;
-const float k2 = -5.7;
-const float k3 = -5.7;
-const float k4 = -5.7;
-const float k5 = -5.7;
-const float b1 = 23.55;
-const float b2 = 23.55;
-const float b3 = 23.55;
-const float b4 = 23.55;
-const float b5 = 23.55;
+//калибровочные значения датчиков (y = k*x + b)
+float k[5] = {-5.7, -5.7, -5.7, -5.7, -5.7};
+float b[5] = {23.55, 23.55, 23.55, 23.55, 23.55};
 
 int samples = 10; //число измерений
 float adc_resolution = 1024.0;
@@ -83,31 +75,31 @@ switch (ph_key)
            lcd.setCursor(0,0);
            lcd.print("pH1=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense1), k1, b1));
+           lcd.print(ph(voltagePH(pHSense1), k[1], b[1]));
        break;  
        case 7:
            lcd.setCursor(0,0);
            lcd.print("pH2=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense2), k2, b2));
+           lcd.print(ph(voltagePH(pHSense2), k[2], b[2]));
        break;
        case 6:
            lcd.setCursor(0,0);
            lcd.print("pH3=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense3), k3, b3));
+           lcd.print(ph(voltagePH(pHSense3), k[3], b[3]));
        break;
        case 4:
            lcd.setCursor(0,0);
            lcd.print("pH4=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense4), k4, b4));
+           lcd.print(ph(voltagePH(pHSense4), k[4], b[4]));
        break;
        case 1:
            lcd.setCursor(0,0);
            lcd.print("pH5=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense5), k5, b5));
+           lcd.print(ph(voltagePH(pHSense5), k[5], b[5]));
        break;
        default:
        break;
