@@ -83,31 +83,31 @@ switch (ph_key)
            lcd.setCursor(0,0);
            lcd.print("pH1=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense1)));
+           lcd.print(ph(voltagePH(pHSense1), k1, b1));
        break;  
        case 7:
            lcd.setCursor(0,0);
            lcd.print("pH2=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense2)));
+           lcd.print(ph(voltagePH(pHSense2), k2, b2));
        break;
        case 6:
            lcd.setCursor(0,0);
            lcd.print("pH3=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense3)));
+           lcd.print(ph(voltagePH(pHSense3), k3, b3));
        break;
        case 4:
            lcd.setCursor(0,0);
            lcd.print("pH4=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense4)));
+           lcd.print(ph(voltagePH(pHSense4), k4, b4));
        break;
        case 1:
            lcd.setCursor(0,0);
            lcd.print("pH5=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense5)));
+           lcd.print(ph(voltagePH(pHSense5), k5, b5));
        break;
        default:
        break;
