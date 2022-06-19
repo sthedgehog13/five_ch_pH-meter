@@ -1,5 +1,3 @@
-// E0 = 6.3 буферный раствор в датчике
-
 #include <LiquidCrystal.h>
 
 //калибровочные значения датчиков (y = k*x + b)
@@ -10,23 +8,16 @@ int samples = 10; //число измерений
 float adc_resolution = 1024.0;
 
 int ph_key;
-float voltagePH1;
-float voltagePH2;
-float voltagePH3;
-float voltagePH4;
-float voltagePH5;
-int pHSense1 = A0;
-int pHSense2 = A1;
-int pHSense3 = A2;
-int pHSense4 = A3;
-int pHSense5 = A4; 
-
+//float voltagePH[5] = {}; //массив напряжений аналоговых датчиков
+//int pHSense[5] = {}; //массив сырых значений аналоговых входов
+byte analogPin[5] = {A0, A1, A2, A3, A4};
+//static const uint8_t analogPin[5] = {A0,A1,A2,A3,A4};
 
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);  //пины к которым подключен экран
  
 void setup()
 {
- lcd.begin(8, 1);  // Инициализирует LCD 8x1
+ lcd.begin(8, 1);  // Инициализируем LCD 8x1
  lcd.setCursor(0,0);
  lcd.print(" OFI-pH");
  delay(2000);
@@ -38,16 +29,15 @@ void setup()
 
 float ph (float voltage, float k, float b)
 {
-    //return 7 + ((2.5 - voltage) / 0.18);
     return k * voltage + b;
 }
 
-float voltagePH(int pHSense) 
+float voltage(int analogPin) 
 {
    int adcPH=0;
    for (int i = 0; i < samples; i++)
       {
-        adcPH += analogRead(pHSense);
+        adcPH += analogRead(analogPin);
         delay(10);
       }
    return (adcPH / samples) * (5.0 / adc_resolution);
@@ -56,18 +46,24 @@ float voltagePH(int pHSense)
 void loop()
 {
 
-if (analogRead(A7)<1000)
+if (analogRead(A7)<1000) //обработка аналоговых кнопок
    {
-      ph_key = (analogRead(A7)+120)/100;
+      ph_key = (analogRead(A7)+120)/100; 
       lcd.clear();
    }
-  
-    
-voltagePH1 = voltagePH(pHSense1);
-voltagePH2 = voltagePH(pHSense2);
-voltagePH3 = voltagePH(pHSense3);
-voltagePH4 = voltagePH(pHSense4);
-voltagePH5 = voltagePH(pHSense5);
+
+//Для отладки  
+//for (int i = 0; i < 5; i++)
+//   {
+//       voltagePH[i] = voltage(analogPin[i]);
+//   }
+//
+//for (int i = 0; i < 5; i++)
+//   {
+//       pHSense[i] = analogRead(analogPin[i]);
+//   }
+//   
+
 
 switch (ph_key)
     {
@@ -75,37 +71,35 @@ switch (ph_key)
            lcd.setCursor(0,0);
            lcd.print("pH1=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense1), k[1], b[1]));
+           lcd.print(ph(voltage(analogPin[0]), k[0], b[0]));
        break;  
        case 7:
            lcd.setCursor(0,0);
            lcd.print("pH2=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense2), k[2], b[2]));
+           lcd.print(ph(voltage(analogPin[1]), k[1], b[1]));
        break;
        case 6:
            lcd.setCursor(0,0);
            lcd.print("pH3=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense3), k[3], b[3]));
+           lcd.print(ph(voltage(analogPin[2]), k[2], b[2]));
        break;
        case 4:
            lcd.setCursor(0,0);
            lcd.print("pH4=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense4), k[4], b[4]));
+           lcd.print(ph(voltage(analogPin[3]), k[3], b[3]));
        break;
        case 1:
            lcd.setCursor(0,0);
            lcd.print("pH5=");
            lcd.setCursor(4,0);
-           lcd.print(ph(voltagePH(pHSense5), k[5], b[5]));
+           lcd.print(ph(voltage(analogPin[4]), k[4], b[4]));
        break;
        default:
        break;
   }
   
-         
-  Serial.println(voltagePH5);
   
 }
